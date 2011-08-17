@@ -16,7 +16,7 @@
 		function head_script()
 		{
 			qa_html_theme_base::head_script();
-			if ($this->forbid_new_tag) {
+			if ($this->forbid_new_tag()) {
 
 				$this->output_raw("
 <script>
@@ -41,7 +41,7 @@ function qa_tag_verify()
 		
 		function form_button_data($button, $key, $style)
 		{
-			if ($this->forbid_new_tag) {
+			if ($this->forbid_new_tag()) {
 				if($key === 'ask') {
 					
 					$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
