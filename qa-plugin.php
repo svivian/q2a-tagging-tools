@@ -1,9 +1,9 @@
 <?php
 /*
 	Plugin Name: Tag Synonymns
-	Plugin URI:
+	Plugin URI: https://github.com/svivian/Q2A-Tag-Synonyms
 	Plugin Description: Automatic editor for tags in Q2A
-	Plugin Version: 1.0
+	Plugin Version: 1.1
 	Plugin Date: 2011-08-16
 	Plugin Author: Scott Vivian
 	Plugin Author URI: http://codelair.co.uk/

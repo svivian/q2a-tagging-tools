@@ -3,3 +3,20 @@ TAG SYNONYMS
 Question2Answer plugin
 -------------------------------------------------
 
+This is an event plugin for popular open source Q&A platform, Question2Answer <question2answer.org>. It allows you to select 'tag synonyms' - unwanted or duplicate tags that should be changed or removed.
+
+For example if you had 'websites' as a tag, some questions may also get tagged 'website'. With this plugin you can set 'website' to always be changed to 'websites' when a user enters it.
+
+
+
+INSTALLATION & USAGE
+-------------------------------------------------
+
+1. Download and extract the files to a subfolder such as `tag-synonyms` inside the `qa-plugins` folder of your Q2A installation.
+2. Log in to your Q2A site as a Super Administrator and head to Admin > Plugins.
+3. Under "Tag Synonyms", enter each pair of tags on a new line, separated by a comma. For example, `q2a,question2answer` (without quotes) means that a tag of `q2a` will be replaced by `question2answer`, while `help` on its own line means that tag will be removed.
+4. Click the button to save changes. All future questions will replace your chosen tag synonyms.
+5. If you have existing mistagged questions, tick the checkbox to replace all tags in older questions with your synonyms.
+
+WARNING: if you have a lot of questions on your site, converting all the old questions WILL TAKE A LONG TIME. It's recommended that you add tag synonyms one or two at a time to avoid overhead.
+
