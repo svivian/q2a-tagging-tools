@@ -22,7 +22,7 @@
 <script>
 function qa_tag_verify()
 {
-	tags = jQuery('#tags').split(' ');
+	tags = jQuery('#tags').val().split(' ');
 	var alltags = ','+qa_tags_complete+',';
 	for(i in tags) {
 		if(alltags.indexOf(','+tags[i]+',') >= 0) {
