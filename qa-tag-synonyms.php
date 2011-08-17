@@ -14,6 +14,8 @@ class qa_tag_synonyms
 		if ( qa_clicked('tag_synonyms_save_button') )
 		{
 			qa_opt( 'tag_synonyms', trim( qa_post_text('tag_synonyms_text') ) );
+			qa_opt( 'tag_synonyms_prevent', qa_post_text('tag_synonyms_prevent') );
+			qa_opt( 'tag_synonyms_rep', qa_post_text('tag_synonyms_rep') );
 			$saved = true;
 		}
 
@@ -28,6 +30,24 @@ class qa_tag_synonyms
 					'type' => 'textarea',
 					'rows' => 20,
 					'note' => 'Put each pair of synonyms on a new line. <code>q2a,question2answer</code> means that a tag of <code>q2a</code> will be replaced by <code>question2answer</code>, while <code>help</code> on its own means that tag will be removed.',
+				),
+			),
+
+			'fields' => array(
+				array(
+					'label' => 'Prevent new users from creating new tags',
+					'tags' => 'onclick="this.checked?jQuery(\'#tSynMin\').show():jQuery(\'#tSynMin\').hide();" name="tag_synonyms_prevent"',
+					'value' => qa_opt('tag_synonyms_prevent'),
+					'type' => 'checkbox',
+				),
+			),
+
+			'fields' => array(
+				array(
+					'label' => 'Min reputation to create new tags',
+					'tags' => 'name="tag_synonyms_rep"',
+					'value' => qa_opt('tag_synonyms_rep'),
+					'type' => 'num',
 				),
 			),
 
