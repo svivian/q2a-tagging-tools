@@ -31,12 +31,18 @@ class qa_tag_synonyms
 					'rows' => 20,
 					'note' => 'Put each pair of synonyms on a new line. <code>q2a,question2answer</code> means that a tag of <code>q2a</code> will be replaced by <code>question2answer</code>, while <code>help</code> on its own means that tag will be removed.',
 				),
+			),
+
+			'fields' => array(
 				array(
 					'label' => 'Prevent new users from creating new tags',
 					'tags' => 'onclick="this.checked?jQuery(\'#tSynMin\').show():jQuery(\'#tSynMin\').hide();" name="tag_synonyms_prevent"',
 					'value' => qa_opt('tag_synonyms_prevent'),
 					'type' => 'checkbox',
 				),
+			),
+
+			'fields' => array(
 				array(
 					'label' => 'Min reputation to create new tags',
 					'tags' => 'name="tag_synonyms_rep"',
