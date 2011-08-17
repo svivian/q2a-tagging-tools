@@ -29,7 +29,7 @@ function qa_tag_verify()
 			continue;
 		}
 		else {
-			alert('The tag \"'+tags[i]+'\" hasn't been created, and you need ".qa_opt('tag_synonyms_rep')." reputation to create new tags!');
+			alert('The tag \"'+tags[i]+'\" has not been created, and you need ".qa_opt('tag_synonyms_rep')." reputation to create new tags!');
 			return false;
 		}
 	}
@@ -57,7 +57,7 @@ function qa_tag_verify()
 	// worker functions
 		
 		function forbid_new_tag() {
-			if($this->template == 'ask' || $this->qa_state || !qa_opt('tag_synonyms_prevent')) return false;
+			if($this->template != 'ask' || $this->qa_state || !qa_opt('tag_synonyms_prevent')) return false;
 			if(qa_get_logged_in_points()< (int)qa_opt('tag_synonyms_rep') && qa_get_logged_in_level()<QA_USER_LEVEL_EXPERT) return true;
 			return false;
 		}
