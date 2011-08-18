@@ -30,7 +30,7 @@ function qa_tag_verify()
 		}
 		else {
 			var error = '<div class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist, and you need ".qa_opt('tag_synonyms_rep')." points to create new tags!</div>';
-			jQuery('#title').insertAfter(error);
+			jQuery(error).insertAfter('#title');
 			return false;
 		}
 	}
