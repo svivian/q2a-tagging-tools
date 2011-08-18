@@ -105,6 +105,12 @@ class qa_tag_synonyms
 					'note' => 'Put each pair of synonyms on a new line. <code>q2a,question2answer</code> means that a tag of <code>q2a</code> will be replaced by <code>question2answer</code>, while <code>help</code> on its own means that tag will be removed.',
 				),
 				array(
+					'label' => 'Also convert existing tags using above rules',
+					'tags' => 'name="tag_synonyms_convert"',
+					'value' => '',
+					'type' => 'checkbox',
+				),
+				array(
 					'label' => 'Prevent new users from creating new tags',
 					'tags' => 'onclick="!this.checked?jQuery(\'#tSynMin\').attr(\'disabled\',true):jQuery(\'#tSynMin\').removeAttr(\'disabled\');" name="tag_synonyms_prevent"',
 					'value' => qa_opt('tag_synonyms_prevent'),
@@ -115,12 +121,6 @@ class qa_tag_synonyms
 					'tags' => 'id="tSynMin" name="tag_synonyms_rep"',
 					'value' => qa_opt('tag_synonyms_rep'),
 					'type' => 'number',
-				),
-				array(
-					'label' => 'Also convert existing tags using above rules',
-					'tags' => 'name="tag_synonyms_convert"',
-					'value' => '',
-					'type' => 'checkbox',
 				),
 			),
 
