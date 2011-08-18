@@ -116,7 +116,6 @@ class qa_tag_synonyms
 					'value' => qa_opt('tag_synonyms_rep'),
 					'type' => 'number',
 				),
-
 				array(
 					'label' => 'Also convert existing tags using above rules',
 					'tags' => 'name="tag_synonyms_convert"',
