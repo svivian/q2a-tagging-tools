@@ -31,3 +31,4 @@ if ( !defined('QA_VERSION') )
 
 
 qa_register_plugin_module('event', 'qa-tag-synonyms.php', 'qa_tag_synonyms', 'Tag Synonyms');
+qa_register_plugin_layer('qa-tag-synonyms-layer.php', 'Tag Synonyms');
