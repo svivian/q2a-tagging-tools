@@ -29,7 +29,8 @@ function qa_tag_verify()
 			continue;
 		}
 		else {
-			alert('The tag \"'+tags[i]+'\" has not been created, and you need ".qa_opt('tag_synonyms_rep')." reputation to create new tags!');
+			var error = '<div class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist, and you need ".qa_opt('tag_synonyms_rep')." points to create new tags!</div>';
+			jQuery('#title').insertAfter(error);
 			return false;
 		}
 	}
