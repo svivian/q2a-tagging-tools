@@ -33,15 +33,15 @@ class qa_tag_synonyms
 				),
 				array(
 					'label' => 'Prevent new users from creating new tags',
-					'tags' => 'onclick="this.checked?jQuery(\'#tSynMin\').show():jQuery(\'#tSynMin\').hide();" name="tag_synonyms_prevent"',
+					'tags' => 'onclick="!this.checked?jQuery(\'#tSynMin\').attr(\'disabled\',true):jQuery(\'#tSynMin\').removeAttr(\'disabled\');" name="tag_synonyms_prevent"',
 					'value' => qa_opt('tag_synonyms_prevent'),
 					'type' => 'checkbox',
 				),
 				array(
 					'label' => 'Min reputation to create new tags',
-					'tags' => 'name="tag_synonyms_rep"',
+					'tags' => 'id="tSynMin" name="tag_synonyms_rep"',
 					'value' => qa_opt('tag_synonyms_rep'),
-					'type' => 'num',
+					'type' => 'number',
 				),
 			),
 
