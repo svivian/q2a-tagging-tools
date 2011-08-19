@@ -1,66 +1,78 @@
 <?php
 
-	class qa_html_theme_layer extends qa_html_theme_base {
+class qa_html_theme_layer extends qa_html_theme_base
+{
 
-		function option_default($option) {
-			
-			switch($option) {
-				default:
-					return false;
-			}
-			
+	function option_default($option)
+	{
+		switch($option)
+		{
+			default:
+				return false;
 		}
+
+	}
 
 	// theme replacement functions
 
-		function head_script()
+	function head_script()
+	{
+		qa_html_theme_base::head_script();
+		if ($this->forbid_new_tag())
 		{
-			qa_html_theme_base::head_script();
-			if ($this->forbid_new_tag()) {
-
-				$this->output_raw("
-<script>
-function qa_tag_verify()
-{
-	tags = jQuery('#tags').val().split(' ');
-	var alltags = ','+qa_tags_complete+',';
-	for(i in tags) {
-		if(alltags.indexOf(','+tags[i]+',') >= 0) {
-			continue;
-		}
-		else {
-			var error = '<div style=\"display:none\" class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist, and you need ".qa_opt('tag_synonyms_rep')." points to create new tags!</div>';
-			jQuery(error).insertAfter('#title').show().delay(5000).hide('slow',function(){jQuery(this).detach()});
-			return false;
+			$this->output_raw(
+				"<script>\n" .
+				"function qa_tag_verify()\n" .
+				"{\n" .
+				"	var tags = jQuery('#tags').val().split(' ');\n" .
+				"	var alltags = ','+qa_tags_complete+',';\n" .
+				"	for (var i in tags)\n" .
+				"	{\n" .
+				"		if (alltags.indexOf(','+tags[i]+',') >= 0)\n" .
+				"		{\n" .
+				"			continue;\n" .
+				"		}\n" .
+				"		else\n" .
+				"		{\n" .
+				"			var error = '<div style=\"display:none\" class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist, and you need " . number_format( qa_opt('tag_synonyms_rep') ) . " points to create new tags!</div>';\n" .
+				"			jQuery(error).insertAfter('#tags').slideDown().delay(5000).slideUp('', function() { jQuery(this).detach() } );\n" .
+				"			return false;\n" .
+				"		}\n" .
+				"	}\n" .
+				"	document.ask.submit();\n" .
+				"}\n" .
+				"</script>"
+			);
 		}
 	}
-	document.ask.submit();
-}
-</script>");
-			}
-		}
-		
-		function form_button_data($button, $key, $style)
+
+	function form_button_data($button, $key, $style)
+	{
+		if ($this->forbid_new_tag())
 		{
-			if ($this->forbid_new_tag()) {
-				if($key === 'ask') {
-					
-					$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
-					$hoverclass='qa-form-'.$style.'-hover qa-form-'.$style.'-hover-'.$key;
-					
-					$this->output('<INPUT'.rtrim(' '.@$button['tags']).' onclick="qa_tag_verify();" VALUE="'.@$button['label'].'" TITLE="'.@$button['popup'].'" TYPE="button" CLASS="'.$baseclass.'" onmouseover="this.className=\''.$hoverclass.'\';" onmouseout="this.className=\''.$baseclass.'\';"/>');
-				}
-				else qa_html_theme_base::form_button_data($button, $key, $style);
+			if ($key === 'ask')
+			{
+				$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
+				$hoverclass='qa-form-'.$style.'-hover qa-form-'.$style.'-hover-'.$key;
+
+				$this->output('<INPUT'.rtrim(' '.@$button['tags']).' onclick="qa_tag_verify();" VALUE="'.@$button['label'].'" TITLE="'.@$button['popup'].'" TYPE="button" CLASS="'.$baseclass.'" onmouseover="this.className=\''.$hoverclass.'\';" onmouseout="this.className=\''.$baseclass.'\';"/>');
 			}
-			else qa_html_theme_base::form_button_data($button, $key, $style);
+			else
+				qa_html_theme_base::form_button_data($button, $key, $style);
 		}
-		
+		else
+			qa_html_theme_base::form_button_data($button, $key, $style);
+	}
+
 	// worker functions
-		
-		function forbid_new_tag() {
-			if($this->template != 'ask' || isset($this->qa_state) || !qa_opt('tag_synonyms_prevent')) return false;
-			if(qa_get_logged_in_points()< (int)qa_opt('tag_synonyms_rep') && qa_get_logged_in_level()<QA_USER_LEVEL_EXPERT) return true;
+
+	function forbid_new_tag()
+	{
+		if ( $this->template != 'ask' || isset($this->qa_state) || !qa_opt('tag_synonyms_prevent') )
 			return false;
-		}
+		if ( qa_get_logged_in_points() < (int)qa_opt('tag_synonyms_rep') && qa_get_logged_in_level() < QA_USER_LEVEL_EXPERT )
+			return true;
+		return false;
 	}
 
+}
