@@ -28,14 +28,10 @@ class qa_html_theme_layer extends qa_html_theme_base
 				"	var alltags = ','+qa_tags_complete+',';\n" .
 				"	for (var i in tags)\n" .
 				"	{\n" .
-				"		if (alltags.indexOf(','+tags[i]+',') >= 0)\n" .
+				"		if ( tags[i].length > 0 && alltags.indexOf(','+tags[i]+',') == -1 )\n" .
 				"		{\n" .
-				"			continue;\n" .
-				"		}\n" .
-				"		else\n" .
-				"		{\n" .
-				"			var error = '<div style=\"display:none\" class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist, and you need " . number_format( qa_opt('tag_synonyms_rep') ) . " points to create new tags!</div>';\n" .
-				"			jQuery(error).insertAfter('#tags').slideDown().delay(5000).slideUp('', function() { jQuery(this).detach() } );\n" .
+				"			var error = '<div style=\"display:none\" class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist; you need " . number_format( qa_opt('tag_synonyms_rep') ) . " points to create new tags.</div>';\n" .
+				"			jQuery(error).insertAfter('#tags').slideDown('fast').delay(5000).slideUp('fast', function() { jQuery(this).detach() } );\n" .
 				"			return false;\n" .
 				"		}\n" .
 				"	}\n" .
