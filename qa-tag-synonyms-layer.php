@@ -18,7 +18,8 @@ class qa_html_theme_layer extends qa_html_theme_base
 	function head_script()
 	{
 		qa_html_theme_base::head_script();
-		if ($this->forbid_new_tag())
+
+		if ( $this->forbid_new_tag() )
 		{
 			$this->output_raw(
 				"<script>\n" .
@@ -26,15 +27,19 @@ class qa_html_theme_layer extends qa_html_theme_base
 				"{\n" .
 				"	var tags = jQuery('#tags').val().split(' ');\n" .
 				"	var alltags = ','+qa_tags_complete+',';\n" .
-				"	for (var i in tags)\n" .
+				"	if ( jQuery('#tags').siblings('.qa-tag-synonyms-error').length > 0 )\n" .
+				"		return false;\n\n" .
+
+				"	for ( var i in tags )\n" .
 				"	{\n" .
 				"		if ( tags[i].length > 0 && alltags.indexOf(','+tags[i]+',') == -1 )\n" .
 				"		{\n" .
-				"			var error = '<div style=\"display:none\" class=\"qa-form-tall-error\">The tag \"'+tags[i]+'\" does not exist; you need " . number_format( qa_opt('tag_synonyms_rep') ) . " points to create new tags.</div>';\n" .
+				"			var error = '<div style=\"display:none\" class=\"qa-form-tall-error qa-tag-synonyms-error\">The tag \"'+tags[i]+'\" does not exist; you need " . number_format( qa_opt('tag_synonyms_rep') ) . " points to create new tags.</div>';\n" .
 				"			jQuery(error).insertAfter('#tags').slideDown('fast').delay(5000).slideUp('fast', function() { jQuery(this).detach() } );\n" .
 				"			return false;\n" .
 				"		}\n" .
-				"	}\n" .
+				"	}\n\n" .
+
 				"	document.ask.submit();\n" .
 				"}\n" .
 				"</script>"
