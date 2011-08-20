@@ -54,20 +54,18 @@ class qa_tag_synonyms
 	{
 		// process config change
 		$saved_msg = '';
+
 		if ( qa_clicked('tag_synonyms_save_button') )
 		{
 			qa_opt( 'tag_synonyms', trim( qa_post_text('tag_synonyms_text') ) );
-			qa_opt( 'tag_synonyms_prevent', qa_post_text('tag_synonyms_prevent') );
-			qa_opt( 'tag_synonyms_rep', qa_post_text('tag_synonyms_rep') );
-
-			$config = trim( qa_post_text('tag_synonyms_text') );
-			qa_opt( 'tag_synonyms', $config );
+			qa_opt( 'tag_synonyms_prevent', (int) qa_post_text('tag_synonyms_prevent') );
+			qa_opt( 'tag_synonyms_rep', (int) qa_post_text('tag_synonyms_rep') );
 			$saved_msg = 'Tag Synonyms settings saved';
 
 			// convert all old tags based on synonyms
 			if ( qa_post_text('tag_synonyms_convert') )
 			{
-				$synonyms = $this->_synonyms_to_array( $config );
+				$synonyms = $this->_synonyms_to_array( qa_opt('tag_synonyms') );
 				$edited = 0;
 
 				qa_suspend_event_reports(true); // avoid infinite loop
@@ -92,13 +90,18 @@ class qa_tag_synonyms
 		}
 
 
+		// set fields to show/hide when checkbox is clicked
+		qa_set_display_rules($qa_content, array(
+			'tag_synonyms_rep' => 'tag_synonyms_prevent',
+		));
+
 		return array(
 			'ok' => $saved_msg,
 
 			'fields' => array(
 				array(
 					'label' => 'Tag Synonyms',
-					'tags' => 'name="tag_synonyms_text"',
+					'tags' => 'name="tag_synonyms_text" id="tag_synonyms_text"',
 					'value' => qa_opt('tag_synonyms'),
 					'type' => 'textarea',
 					'rows' => 20,
@@ -106,28 +109,28 @@ class qa_tag_synonyms
 				),
 				array(
 					'label' => 'Also convert existing tags using above rules',
-					'tags' => 'name="tag_synonyms_convert"',
+					'tags' => 'name="tag_synonyms_convert" id="tag_synonyms_convert"',
 					'value' => '',
 					'type' => 'checkbox',
 				),
 
 				array(
 					'type' => 'blank',
-				),			
-					
+				),
+
 				array(
 					'label' => 'Prevent new users from creating new tags',
-					'tags' => 'onclick="this.checked?jQuery(\'#tSynMin\').fadeIn():jQuery(\'#tSynMin\').fadeOut();" name="tag_synonyms_prevent"',
+					'tags' => 'name="tag_synonyms_prevent" id="tag_synonyms_prevent"',
 					'value' => qa_opt('tag_synonyms_prevent'),
 					'type' => 'checkbox',
-					'note' => '<table id="tSynMin" style="display:'.(qa_opt('tag_synonyms_prevent')?'block':'none').'"><tr><td>',
 				),
+
 				array(
-					'label' => 'Min reputation to create new tags',
-					'tags' => 'name="tag_synonyms_rep"',
+					'id' => 'tag_synonyms_rep',
+					'label' => 'Minimum reputation to create new tags',
 					'value' => qa_opt('tag_synonyms_rep'),
+					'tags' => 'name="tag_synonyms_rep"',
 					'type' => 'number',
-					'note' => '</td></tr></table>',
 				),
 			),
 
@@ -163,4 +166,4 @@ class qa_tag_synonyms
 		qa_suspend_event_reports(false);
 	}
 
-};
+}

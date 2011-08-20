@@ -6,7 +6,6 @@
 
 class qa_html_theme_layer extends qa_html_theme_base
 {
-
 	function option_default($option)
 	{
 		switch($option)
@@ -53,29 +52,31 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 	function form_button_data($button, $key, $style)
 	{
-		if ($this->forbid_new_tag())
+		if ( $this->forbid_new_tag() && $key === 'ask' )
 		{
-			if ($key === 'ask')
-			{
-				$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
-				$hoverclass='qa-form-'.$style.'-hover qa-form-'.$style.'-hover-'.$key;
+			$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
+			$hoverclass='qa-form-'.$style.'-hover qa-form-'.$style.'-hover-'.$key;
 
-				$this->output('<INPUT'.rtrim(' '.@$button['tags']).' onclick="qa_tag_verify();" VALUE="'.@$button['label'].'" TITLE="'.@$button['popup'].'" TYPE="button" CLASS="'.$baseclass.'" onmouseover="this.className=\''.$hoverclass.'\';" onmouseout="this.className=\''.$baseclass.'\';"/>');
-			}
-			else
-				qa_html_theme_base::form_button_data($button, $key, $style);
+			$this->output('<INPUT'.rtrim(' '.@$button['tags']).' onclick="qa_tag_verify();" VALUE="'.@$button['label'].'" TITLE="'.@$button['popup'].'" TYPE="button" CLASS="'.$baseclass.'" onmouseover="this.className=\''.$hoverclass.'\';" onmouseout="this.className=\''.$baseclass.'\';"/>');
 		}
 		else
 			qa_html_theme_base::form_button_data($button, $key, $style);
 	}
 
 	// worker functions
+
 	function forbid_new_tag()
 	{
-		if ( $this->template != 'ask' || isset($this->qa_state) || !qa_opt('tag_synonyms_prevent') )
-			return false;
-		if ( qa_get_logged_in_points() < (int)qa_opt('tag_synonyms_rep') && qa_get_logged_in_level() < QA_USER_LEVEL_EXPERT )
-			return true;
+		$q_edit = $this->template == 'ask' || isset( $this->content['form_q_edit'] );
+		$tag_prevent = qa_opt('tag_synonyms_prevent');
+
+		if ( $q_edit && $tag_prevent )
+		{
+			return
+				qa_get_logged_in_points() < (int) qa_opt('tag_synonyms_rep') &&
+				qa_get_logged_in_level() < QA_USER_LEVEL_EXPERT;
+		}
+
 		return false;
 	}
 

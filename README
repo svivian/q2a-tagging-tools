@@ -12,11 +12,16 @@ For example if you had 'websites' as a tag, some questions may also get tagged '
 INSTALLATION & USAGE
 -------------------------------------------------
 
-1. Download and extract the files to a subfolder such as `tag-synonyms` inside the `qa-plugins` folder of your Q2A installation.
-2. Log in to your Q2A site as a Super Administrator and head to Admin > Plugins.
-3. Under "Tag Synonyms", enter each pair of tags on a new line, separated by a comma. For example, `q2a,question2answer` (without quotes) means that a tag of `q2a` will be replaced by `question2answer`, while `help` on its own line means that tag will be removed.
-4. Click the button to save changes. All future questions will replace your chosen tag synonyms.
-5. If you have existing mistagged questions, tick the checkbox to replace all tags in older questions with your synonyms.
+1. Download and extract the files to a subfolder such as `tag-synonyms` inside the `qa-plugins` folder of your Q2A installation. Since the Github repo is updated regularly, a stable versioned package is also provided, e.g. `Q2A-Tag-Synonyms_1.1.zip`
 
-WARNING: if you have a lot of questions on your site, converting all the old questions WILL TAKE A LONG TIME. It's recommended that you add tag synonyms one or two at a time to avoid overhead.
+2. Log in to your Q2A site as a Super Administrator and head to Admin > Plugins.
+
+3. Under "Tag Synonyms", enter each pair of tags on a new line, separated by a comma. For example, `q2a,question2answer` (without quotes) means that a tag of `q2a` will be replaced by `question2answer`, while `help` on its own line means that tag will be removed.
+
+4. Click the button to save changes. All future questions will replace your chosen tag synonyms.
+
+5. If you have existing mistagged questions, tick the checkbox to replace all tags in older questions with your synonyms.
+   WARNING: if you have a lot of questions on your site, converting all the old questions WILL TAKE A LONG TIME. It's recommended that you add tag synonyms one or two at a time to avoid overhead.
+
+6. The option "Prevent new users from creating new tags" adds a Javascript barrier preventing low-rep users from creating new tags. Currently there is no way to replicate this on the server side without hacking the core, but that will rarely be a problem.
 
