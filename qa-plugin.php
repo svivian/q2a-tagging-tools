@@ -1,9 +1,9 @@
 <?php
 /*
-	Plugin Name: Tag Synonymns
-	Plugin URI: https://github.com/svivian/Q2A-Tag-Synonyms
-	Plugin Description: Automatic editor for tags in Q2A
-	Plugin Version: 1.2
+	Plugin Name: Tagging Tools
+	Plugin URI: https://github.com/svivian/q2a-tagging-tools
+	Plugin Description: Automatic tag editor for Q2A
+	Plugin Version: 1.5
 	Plugin Date: 2011-08-16
 	Plugin Author: Scott Vivian
 	Plugin Author URI: http://codelair.co.uk/
@@ -31,5 +31,6 @@ if ( !defined('QA_VERSION') )
 }
 
 
-qa_register_plugin_module('event', 'qa-tag-synonyms.php', 'qa_tag_synonyms', 'Tag Synonyms');
-qa_register_plugin_layer('qa-tag-synonyms-layer.php', 'Tag Synonyms');
+qa_register_plugin_module('event', 'qa-tagging-tools.php', 'qa_tagging_tools', 'Tagging Tools');
+qa_register_plugin_module('page', 'qa-tt-ajax.php', 'qa_tagging_tools_ajax', 'Tagging Tools AJAX handler');
+qa_register_plugin_layer('qa-tt-layer.php', 'Tagging Tools Layer');

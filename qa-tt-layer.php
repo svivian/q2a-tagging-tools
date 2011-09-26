@@ -1,28 +1,18 @@
 <?php
 /*
-	Question2Answer Tag Synonyms plugin, v1.2
+	Question2Answer Tagging Tools plugin, v1.5
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
 class qa_html_theme_layer extends qa_html_theme_base
 {
-	function option_default($option)
-	{
-		switch($option)
-		{
-			default:
-				return false;
-		}
-
-	}
-
 	// theme replacement functions
 
 	function head_script()
 	{
 		qa_html_theme_base::head_script();
 
-		if ( $this->forbid_new_tag() )
+		if ( $this->_forbid_new_tag() )
 		{
 			$this->output_raw(
 				"<script>\n" .
@@ -52,7 +42,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 	function form_button_data($button, $key, $style)
 	{
-		if ( $this->forbid_new_tag() && $key === 'ask' )
+		if ( $key === 'ask' && $this->_forbid_new_tag() )
 		{
 			$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
 			$hoverclass='qa-form-'.$style.'-hover qa-form-'.$style.'-hover-'.$key;
@@ -63,9 +53,10 @@ class qa_html_theme_layer extends qa_html_theme_base
 			qa_html_theme_base::form_button_data($button, $key, $style);
 	}
 
+
 	// worker functions
 
-	function forbid_new_tag()
+	function _forbid_new_tag()
 	{
 		$q_edit = $this->template == 'ask' || isset( $this->content['form_q_edit'] );
 		$tag_prevent = qa_opt('tag_synonyms_prevent');

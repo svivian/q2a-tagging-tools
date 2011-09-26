@@ -1,98 +1,72 @@
 <?php
 /*
-	Question2Answer Tag Synonyms plugin, v1.2
+	Question2Answer Tagging Tools plugin, v1.5
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
-require_once QA_INCLUDE_DIR.'qa-db-selects.php';
+// require_once QA_INCLUDE_DIR.'qa-db-selects.php';
 require_once QA_INCLUDE_DIR.'qa-app-posts.php';
+require_once 'qa-tt-helper.php';
 
-class qa_tag_synonyms
+class qa_tagging_tools
 {
-	// converts a string of synonyms to an array [[A,B],[C,D]]
-	function _synonyms_to_array( $config )
+	private $directory;
+	private $urltoroot;
+
+	public function load_module($directory, $urltoroot)
 	{
-		$synonyms = array();
-		$lines = explode( "\n", $config );
-
-		foreach ( $lines as $line )
-		{
-			$items = explode( ',', $line );
-			if ( !isset($items[1]) )
-				$items[1] = '';
-
-			$synonyms[] = array( 'from' => trim($items[0]), 'to' => trim($items[1]) );
-		}
-
-		return $synonyms;
-	}
-
-	// converts each tag to a synonym if it exists
-	function _convert_tags( &$tags, &$synonyms )
-	{
-		$newtags = array();
-
-		foreach ( $tags as $tag )
-		{
-			foreach ( $synonyms as $syn )
-			{
-				if ( $tag === $syn['from'] )
-				{
-					$tag = $syn['to'];
-					break; // don't need to check more synonyms
-				}
-			}
-
-			if ( $tag != '' )
-				$newtags[] = $tag;
-		}
-
-		return $newtags;
+		$this->directory = $directory;
+		$this->urltoroot = $urltoroot;
 	}
 
 	function admin_form( &$qa_content )
 	{
 		// process config change
 		$saved_msg = '';
+		$js = array();
 
-		if ( qa_clicked('tag_synonyms_save_button') )
+		if ( qa_clicked('tagging_tools_save_button') )
 		{
-			qa_opt( 'tag_synonyms', trim( qa_post_text('tag_synonyms_text') ) );
-			qa_opt( 'tag_synonyms_prevent', (int) qa_post_text('tag_synonyms_prevent') );
-			qa_opt( 'tag_synonyms_rep', (int) qa_post_text('tag_synonyms_rep') );
-			$saved_msg = 'Tag Synonyms settings saved';
+			qa_opt( 'tagging_tools_synonyms', trim( qa_post_text('tagging_tools_synonyms') ) );
+			qa_opt( 'tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent') );
+			qa_opt( 'tagging_tools_rep', (int) qa_post_text('tagging_tools_rep') );
+			$saved_msg = '<div id="tagging_tools_recalc">Tag Synonyms settings saved</div>';
 
 			// convert all old tags based on synonyms
-			if ( qa_post_text('tag_synonyms_convert') )
+			if ( qa_post_text('tagging_tools_convert') )
 			{
-				$synonyms = $this->_synonyms_to_array( qa_opt('tag_synonyms') );
-				$edited = 0;
-
-				qa_suspend_event_reports(true); // avoid infinite loop
-				foreach ( $synonyms as $syn )
-				{
-					list( $questions, $qcount ) = qa_db_select_with_pending(
-						qa_db_tag_recent_qs_selectspec( null, $syn['from'], 0, false, 500 ), // using 500 as $count is a bit hacky
-						qa_db_tag_count_qs_selectspec( $syn['from'] )
-					);
-
-					foreach ( $questions as $q )
-					{
-						$oldtags = qa_tagstring_to_tags( $q['tags'] );
-						$newtags = $this->_convert_tags( $oldtags, $synonyms );
-						qa_post_set_content( $q['postid'], null, null, null, $newtags );
-						$edited++;
-					}
-				}
-				qa_suspend_event_reports(false);
-				$saved_msg .= ' (and ' . $edited . ' tags edited)';
+				$saved_msg = '<div id="tagging_tools_recalc">Editing tags...</div>';
+				$js = array(
+					'<script>',
+					'/* ajax request to "ajax-tagging-tools" */',
+					'function ajax_retag()',
+					'{',
+					'	$.ajax({',
+					'		url: qa_root+"ajax-tagging-tools",',
+					'		success: function(response) {',
+// 					'			console.log(response);',
+					'			var posts_left = parseInt(response,10);',
+					'			var $ok = $("#tagging_tools_recalc");',
+					'			if ( posts_left === 0 ) {',
+					'				$ok.text("All tags edited!");',
+					'			}',
+					'			else {',
+					'				$ok.text("Editing tags... "+posts_left+" posts remaining...");',
+					'				window.setTimeout(ajax_retag, 2000);',
+					'			}',
+					'			',
+					'		}',
+					'	});',
+					'}',
+					'$(window).load(ajax_retag);',
+					'</script>',
+				);
 			}
 		}
 
-
 		// set fields to show/hide when checkbox is clicked
 		qa_set_display_rules($qa_content, array(
-			'tag_synonyms_rep' => 'tag_synonyms_prevent',
+			'tagging_tools_rep' => 'tagging_tools_prevent',
 		));
 
 		return array(
@@ -101,43 +75,44 @@ class qa_tag_synonyms
 			'fields' => array(
 				array(
 					'label' => 'Tag Synonyms',
-					'tags' => 'name="tag_synonyms_text" id="tag_synonyms_text"',
-					'value' => qa_opt('tag_synonyms'),
+					'tags' => 'name="tagging_tools_synonyms" id="tagging_tools_synonyms"',
+					'value' => qa_opt('tagging_tools_synonyms'),
 					'type' => 'textarea',
 					'rows' => 20,
 					'note' => 'Put each pair of synonyms on a new line. <code>q2a,question2answer</code> means that a tag of <code>q2a</code> will be replaced by <code>question2answer</code>, while <code>help</code> on its own means that tag will be removed.',
 				),
 				array(
 					'label' => 'Also convert existing tags using above rules',
-					'tags' => 'name="tag_synonyms_convert" id="tag_synonyms_convert"',
+					'tags' => 'name="tagging_tools_convert" id="tagging_tools_convert"',
 					'value' => '',
 					'type' => 'checkbox',
 				),
 
 				array(
-					'type' => 'blank',
-				),
-
-				array(
 					'label' => 'Prevent new users from creating new tags',
-					'tags' => 'name="tag_synonyms_prevent" id="tag_synonyms_prevent"',
-					'value' => qa_opt('tag_synonyms_prevent'),
+					'tags' => 'name="tagging_tools_prevent" id="tagging_tools_prevent"',
+					'value' => qa_opt('tagging_tools_prevent'),
 					'type' => 'checkbox',
 				),
 
 				array(
-					'id' => 'tag_synonyms_rep',
+					'id' => 'tagging_tools_rep',
 					'label' => 'Minimum reputation to create new tags',
-					'value' => qa_opt('tag_synonyms_rep'),
-					'tags' => 'name="tag_synonyms_rep"',
+					'value' => qa_opt('tagging_tools_rep'),
+					'tags' => 'name="tagging_tools_rep"',
 					'type' => 'number',
+				),
+
+				array(
+					'type' => 'custom',
+					'html' => implode("\n", $js)."\n",
 				),
 			),
 
 			'buttons' => array(
 				array(
 					'label' => 'Save Changes',
-					'tags' => 'name="tag_synonyms_save_button"',
+					'tags' => 'name="tagging_tools_save_button"',
 				),
 			),
 		);
@@ -146,19 +121,18 @@ class qa_tag_synonyms
 
 	function process_event( $event, $userid, $handle, $cookieid, $params )
 	{
-		// only interested in q_post & q_edit
+		// only interested in questions
 		if ( $event != 'q_post' && $event != 'q_edit' )
 			return;
 
 		// get config data
-		$config = qa_opt('tag_synonyms');
+		$config = qa_opt('tagging_tools_synonyms');
 		if ( !$config )
 			return;
 
 		$oldtags = qa_tagstring_to_tags( $params['tags'] );
-		$synonyms = $this->_synonyms_to_array( $config );
-
-		$newtags = $this->_convert_tags( $oldtags, $synonyms );
+		$synonyms = qa_tt_helper::synonyms_to_array( $config );
+		$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
 
 		// updating content would trigger another event, so we suspend events to avoid an infinite loop
 		qa_suspend_event_reports(true);
