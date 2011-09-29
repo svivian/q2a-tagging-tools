@@ -52,7 +52,7 @@ class qa_tagging_tools
 					'			}',
 					'			else {',
 					'				$ok.text("Editing tags... "+posts_left+" posts remaining...");',
-					'				window.setTimeout(ajax_retag, 2000);',
+					'				window.setTimeout(ajax_retag, 1500);',
 					'			}',
 					'			',
 					'		}',

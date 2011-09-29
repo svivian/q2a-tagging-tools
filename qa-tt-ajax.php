@@ -10,7 +10,7 @@ require_once 'qa-tt-helper.php';
 
 class qa_tagging_tools_ajax
 {
-	private $process_tags = 15;
+	private $process_tags = 5;
 
 	function match_request( $request )
 	{
