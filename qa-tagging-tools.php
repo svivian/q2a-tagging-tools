@@ -27,7 +27,7 @@ class qa_tagging_tools
 
 		if ( qa_clicked('tagging_tools_save_button') )
 		{
-			qa_opt( 'tagging_tools_synonyms', trim( qa_post_text('tagging_tools_synonyms') ) );
+			qa_opt( 'tagging_tools_synonyms', strtolower( trim( qa_post_text('tagging_tools_synonyms') ) ) );
 			qa_opt( 'tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent') );
 			qa_opt( 'tagging_tools_rep', (int) qa_post_text('tagging_tools_rep') );
 			$saved_msg = '<div id="tagging_tools_recalc">Tag Synonyms settings saved</div>';
@@ -49,6 +49,9 @@ class qa_tagging_tools
 					'			var $ok = $("#tagging_tools_recalc");',
 					'			if ( posts_left === 0 ) {',
 					'				$ok.text("All tags edited!");',
+					'			}',
+					'			else if ( isNaN(posts_left) ) {',
+					'				$ok.text("There was an error editing the tags.");',
 					'			}',
 					'			else {',
 					'				$ok.text("Editing tags... "+posts_left+" posts remaining...");',

@@ -31,6 +31,7 @@ class qa_tt_helper
 
 		foreach ( $tags as $tag )
 		{
+			$tag = strtolower( $tag );
 			foreach ( $synonyms as $syn )
 			{
 				if ( $tag === $syn['from'] )

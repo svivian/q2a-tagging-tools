@@ -31,11 +31,11 @@ class qa_tagging_tools_ajax
 			$from[] = "'" . qa_db_escape_string($syn['from']) . "'";
 
 		// basic select
-		$sql_suffix = 'FROM qa_posts p, qa_posttags t, qa_words w WHERE w.wordid=t.wordid AND p.postid=t.postid AND w.word IN (' . implode(',', $from) . ')';
+		$sql_suffix = 'FROM ^posts p, ^posttags t, ^words w WHERE w.wordid=t.wordid AND p.postid=t.postid AND w.word IN (' . implode(',', $from) . ')';
 
 		// get total
 		$sql_count = 'SELECT count(*) AS total '.$sql_suffix;
-		$result = qa_db_query_raw($sql_count);
+		$result = qa_db_query_sub($sql_count);
 		$count = qa_db_read_one_assoc($result, true);
 
 		if ( $count['total'] == 0 )
@@ -46,7 +46,7 @@ class qa_tagging_tools_ajax
 
 		// get some posts to edit
 		$sql = 'SELECT p.postid, BINARY p.tags AS tags '.$sql_suffix.' LIMIT '.$this->process_tags;
-		$result = qa_db_query_raw($sql);
+		$result = qa_db_query_sub($sql);
 		$questions = qa_db_read_all_assoc($result);
 
 		qa_suspend_event_reports(true); // avoid infinite loop
