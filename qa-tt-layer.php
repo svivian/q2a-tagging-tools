@@ -14,7 +14,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 		if ( $this->_forbid_new_tag() )
 		{
-			$this->output_raw(
+			$js =
 				"<script>\n" .
 				"function qa_tag_verify()\n" .
 				"{\n" .
@@ -35,24 +35,15 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 				"	document.ask.submit();\n" .
 				"}\n" .
-				"</script>"
-			);
+
+				"$(function(){\n" .
+				"	$('.qa-form-tall-button-ask').on('click', qa_tag_verify);\n" .
+				"});\n" .
+				"</script>";
+
+			$this->output_raw($js);
 		}
 	}
-
-	function form_button_data($button, $key, $style)
-	{
-		if ( $key === 'ask' && $this->_forbid_new_tag() )
-		{
-			$baseclass='qa-form-'.$style.'-button qa-form-'.$style.'-button-'.$key;
-			$hoverclass='qa-form-'.$style.'-hover qa-form-'.$style.'-hover-'.$key;
-
-			$this->output('<INPUT'.rtrim(' '.@$button['tags']).' onclick="qa_tag_verify();" VALUE="'.@$button['label'].'" TITLE="'.@$button['popup'].'" TYPE="button" CLASS="'.$baseclass.'" onmouseover="this.className=\''.$hoverclass.'\';" onmouseout="this.className=\''.$baseclass.'\';"/>');
-		}
-		else
-			qa_html_theme_base::form_button_data($button, $key, $style);
-	}
-
 
 	// worker functions
 
