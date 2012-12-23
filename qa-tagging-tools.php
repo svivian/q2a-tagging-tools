@@ -133,7 +133,7 @@ class qa_tagging_tools
 		if ( !$config )
 			return;
 
-		$oldtags = qa_tagstring_to_tags( $params['tags'] );
+		$oldtags = qa_tagstring_to_tags( @$params['tags'] );
 		$synonyms = qa_tt_helper::synonyms_to_array( $config );
 		$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
 

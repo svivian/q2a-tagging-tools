@@ -19,10 +19,8 @@ class qa_tagging_tools_ajax
 
 	function process_request( $request )
 	{
-		// check user (mod:80, admin:100, super:120)
-		$username = qa_get_logged_in_handle();
 		$userlevel = qa_get_logged_in_level();
-		if ( $userlevel < 120 )
+		if ( $userlevel < QA_USER_LEVEL_SUPER )
 			return;
 
 		$synonyms = qa_tt_helper::synonyms_to_array( qa_opt('tagging_tools_synonyms') );
@@ -50,11 +48,12 @@ class qa_tagging_tools_ajax
 		$questions = qa_db_read_all_assoc($result);
 
 		qa_suspend_event_reports(true); // avoid infinite loop
+		$userid = qa_get_logged_in_userid();
 		foreach ( $questions as $q )
 		{
-			$oldtags = qa_tagstring_to_tags( $q['tags'] );
+			$oldtags = qa_tagstring_to_tags( @$q['tags'] );
 			$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
-			qa_post_set_content( $q['postid'], null, null, null, $newtags );
+			qa_post_set_content( $q['postid'], null, null, null, $newtags, null, null, $userid );
 		}
 		qa_suspend_event_reports(false);
 
