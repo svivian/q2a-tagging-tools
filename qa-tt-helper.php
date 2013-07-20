@@ -8,7 +8,7 @@
 class qa_tt_helper
 {
 	// converts a config string of synonyms to an array [[A,B],[C,D]]
-	function synonyms_to_array( $config )
+	public static function synonyms_to_array( $config )
 	{
 		$synonyms = array();
 		$lines = explode( "\n", $config );
@@ -25,7 +25,7 @@ class qa_tt_helper
 	}
 
 	// converts each tag to a synonym if it exists
-	function convert_tags( &$tags, &$synonyms )
+	public static function convert_tags( &$tags, &$synonyms )
 	{
 		$newtags = array();
 
