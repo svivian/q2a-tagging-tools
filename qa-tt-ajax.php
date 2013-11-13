@@ -29,7 +29,7 @@ class qa_tagging_tools_ajax
 			$from[] = "'" . qa_db_escape_string($syn['from']) . "'";
 
 		// basic select
-		$sql_suffix = 'FROM ^posts p, ^posttags t, ^words w WHERE w.wordid=t.wordid AND p.postid=t.postid AND w.word IN (' . implode(',', $from) . ')';
+		$sql_suffix = 'FROM ^posts p, ^posttags t, ^words w WHERE w.wordid=t.wordid AND p.postid=t.postid AND BINARY w.word IN (' . implode(',', $from) . ')';
 
 		// get total
 		$sql_count = 'SELECT count(*) AS total '.$sql_suffix;
