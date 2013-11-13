@@ -12,7 +12,7 @@ class qa_html_theme_layer extends qa_html_theme_base
 	{
 		qa_html_theme_base::head_script();
 
-		if ( $this->_forbid_new_tag() )
+		if ( qa_opt( 'tagging_tools_prevent') )
 		{
 			$js =
 				"<script>\n" .
