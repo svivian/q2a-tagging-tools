@@ -1,6 +1,6 @@
 <?php
 /*
-	Question2Answer Tagging Tools plugin, v1.5
+	Question2Answer Tagging Tools plugin
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
