@@ -2,14 +2,14 @@
 /*
 	Plugin Name: Tagging Tools
 	Plugin URI: https://github.com/svivian/q2a-tagging-tools
-	Plugin Description: Automatic tag editor for Q2A
-	Plugin Version: 1.5
+	Plugin Description: Automatically modify/remove tags in questions
+	Plugin Version: 1.6
 	Plugin Date: 2011-08-16
 	Plugin Author: Scott Vivian
 	Plugin Author URI: http://codelair.co.uk/
 	Plugin License: GPLv3
 	Plugin Minimum Question2Answer Version: 1.4
-	Plugin Contributors: NoahY
+	Plugin Update Check URI: https://raw.github.com/svivian/q2a-tagging-tools/master/qa-plugin.php
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
