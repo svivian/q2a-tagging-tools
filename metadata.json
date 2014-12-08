@@ -1,0 +1,13 @@
+{
+	"name": "Tagging Tools",
+	"uri": "https://github.com/svivian/q2a-tagging-tools",
+	"description": "Automatically modify/remove tags in questions",
+	"version": "1.7",
+	"date": "2014-12-08",
+	"author": "Scott Vivian",
+	"author_uri": "http://codelair.co.uk",
+	"license": "GPLv3",
+	"update_uri": "https://raw.githubusercontent.com/svivian/q2a-tagging-tools/master/metadata.json",
+	"min_q2a": "1.4",
+	"min_php": "5.2"
+}

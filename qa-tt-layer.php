@@ -44,7 +44,6 @@ class qa_html_theme_layer extends qa_html_theme_base
 	}
 
 
-
 	private function forbid_new_tag()
 	{
 		$q_edit = $this->template == 'ask' || isset( $this->content['form_q_edit'] );
