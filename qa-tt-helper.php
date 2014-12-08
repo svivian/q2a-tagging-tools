@@ -46,6 +46,4 @@ class qa_tt_helper
 
 		return $newtags;
 	}
-
 }
-

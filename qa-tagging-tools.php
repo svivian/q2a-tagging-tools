@@ -4,7 +4,6 @@
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
-// require_once QA_INCLUDE_DIR.'qa-db-selects.php';
 require_once QA_INCLUDE_DIR.'qa-app-posts.php';
 require_once 'qa-tt-helper.php';
 
@@ -19,7 +18,40 @@ class qa_tagging_tools
 		$this->urltoroot = $urltoroot;
 	}
 
-	function admin_form( &$qa_content )
+	public function option_default($option)
+	{
+		switch ($option) {
+			case 'tagging_tools_synonyms':
+				return '';
+			case 'tagging_tools_prevent':
+				return 0;
+			case 'tagging_tools_rep':
+				return 100;
+		}
+	}
+
+	public function process_event( $event, $userid, $handle, $cookieid, $params )
+	{
+		// only interested in questions
+		if ( $event != 'q_post' && $event != 'q_edit' )
+			return;
+
+		// get config data
+		$config = qa_opt('tagging_tools_synonyms');
+		if ( !$config )
+			return;
+
+		$oldtags = qa_tagstring_to_tags( @$params['tags'] );
+		$synonyms = qa_tt_helper::synonyms_to_array( $config );
+		$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
+
+		// updating content would trigger another event, so we suspend events to avoid an infinite loop
+		qa_suspend_event_reports(true);
+		qa_post_set_content( $params['postid'], $params['title'], $params['content'], $params['format'], $newtags );
+		qa_suspend_event_reports(false);
+	}
+
+	public function admin_form( &$qa_content )
 	{
 		// process config change
 		$saved_msg = '';
@@ -27,7 +59,7 @@ class qa_tagging_tools
 
 		if ( qa_clicked('tagging_tools_save_button') )
 		{
-			qa_opt( 'tagging_tools_synonyms', strtolower( trim( qa_post_text('tagging_tools_synonyms') ) ) );
+			qa_opt( 'tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))) );
 			qa_opt( 'tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent') );
 			qa_opt( 'tagging_tools_rep', (int) qa_post_text('tagging_tools_rep') );
 			$saved_msg = '<div id="tagging_tools_recalc">Tag Synonyms settings saved</div>';
@@ -120,27 +152,4 @@ class qa_tagging_tools
 			),
 		);
 	}
-
-
-	function process_event( $event, $userid, $handle, $cookieid, $params )
-	{
-		// only interested in questions
-		if ( $event != 'q_post' && $event != 'q_edit' )
-			return;
-
-		// get config data
-		$config = qa_opt('tagging_tools_synonyms');
-		if ( !$config )
-			return;
-
-		$oldtags = qa_tagstring_to_tags( @$params['tags'] );
-		$synonyms = qa_tt_helper::synonyms_to_array( $config );
-		$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
-
-		// updating content would trigger another event, so we suspend events to avoid an infinite loop
-		qa_suspend_event_reports(true);
-		qa_post_set_content( $params['postid'], $params['title'], $params['content'], $params['format'], $newtags );
-		qa_suspend_event_reports(false);
-	}
-
 }

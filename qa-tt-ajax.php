@@ -12,12 +12,12 @@ class qa_tagging_tools_ajax
 {
 	private $process_tags = 5;
 
-	function match_request( $request )
+	public function match_request( $request )
 	{
 		return $request == 'ajax-tagging-tools';
 	}
 
-	function process_request( $request )
+	public function process_request( $request )
 	{
 		$userlevel = qa_get_logged_in_level();
 		if ( $userlevel < QA_USER_LEVEL_SUPER )
@@ -59,6 +59,4 @@ class qa_tagging_tools_ajax
 
 		echo $count['total'];
 	}
-
-
 }

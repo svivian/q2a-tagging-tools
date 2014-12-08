@@ -6,14 +6,11 @@
 
 class qa_html_theme_layer extends qa_html_theme_base
 {
-	// theme replacement functions
-
-	function head_script()
+	public function head_script()
 	{
 		qa_html_theme_base::head_script();
 
-		if ( $this->_forbid_new_tag() )
-		{
+		if ($this->forbid_new_tag()) {
 			$js =
 				"<script>\n" .
 				"function qa_tag_verify()\n" .
@@ -45,9 +42,9 @@ class qa_html_theme_layer extends qa_html_theme_base
 		}
 	}
 
-	// worker functions
 
-	function _forbid_new_tag()
+
+	private function forbid_new_tag()
 	{
 		$q_edit = $this->template == 'ask' || isset( $this->content['form_q_edit'] );
 		$tag_prevent = qa_opt('tagging_tools_prevent');
@@ -61,5 +58,4 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 		return false;
 	}
-
 }

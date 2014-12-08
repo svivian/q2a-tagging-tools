@@ -24,8 +24,7 @@
 	More about this license: http://www.gnu.org/licenses/gpl.html
 */
 
-if ( !defined('QA_VERSION') )
-{
+if ( !defined('QA_VERSION') ) {
 	header('Location: ../../');
 	exit;
 }
