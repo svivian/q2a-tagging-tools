@@ -31,5 +31,6 @@ if ( !defined('QA_VERSION') ) {
 
 
 qa_register_plugin_module('event', 'qa-tagging-tools.php', 'qa_tagging_tools', 'Tagging Tools');
+qa_register_plugin_module('filter', 'qa-tt-filter.php', 'qa_tagging_tools_filter', 'Tagging Tools filter');
 qa_register_plugin_module('page', 'qa-tt-ajax.php', 'qa_tagging_tools_ajax', 'Tagging Tools AJAX handler');
 qa_register_plugin_layer('qa-tt-layer.php', 'Tagging Tools Layer');
