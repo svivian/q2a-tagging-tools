@@ -9,6 +9,9 @@ require_once 'qa-tt-helper.php';
 
 class qa_tagging_tools
 {
+	private $directory;
+	private $urltoroot;
+
 	public function filter_question(&$question, &$errors, $oldquestion)
 	{
 		// replace tag synonyms
@@ -59,6 +62,12 @@ class qa_tagging_tools
 		}
 	}
 
+	public function load_module($directory, $urltoroot)
+	{
+		$this->directory = $directory;
+		$this->urltoroot = $urltoroot;
+	}
+
 	public function option_default($option)
 	{
 		switch ($option) {
@@ -75,7 +84,7 @@ class qa_tagging_tools
 	{
 		// process config change
 		$saved_msg = '';
-		$js = array();
+		$js = '';
 
 		if (qa_clicked('tagging_tools_save_button')) {
 			qa_opt('tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
@@ -86,34 +95,7 @@ class qa_tagging_tools
 			// convert all old tags based on synonyms
 			if (qa_post_text('tagging_tools_convert')) {
 				$saved_msg = '<div id="tagging_tools_recalc">Editing tags...</div>';
-				$js = array(
-					'<script>',
-					'/* ajax request to "ajax-tagging-tools" */',
-					'function ajax_retag()',
-					'{',
-					'	$.ajax({',
-					'		url: qa_root+"ajax-tagging-tools",',
-					'		success: function(response) {',
-// 					'			console.log(response);',
-					'			var posts_left = parseInt(response,10);',
-					'			var $ok = $("#tagging_tools_recalc");',
-					'			if (posts_left === 0) {',
-					'				$ok.text("All tags edited!");',
-					'			}',
-					'			else if (isNaN(posts_left)) {',
-					'				$ok.text("There was an error editing the tags.");',
-					'			}',
-					'			else {',
-					'				$ok.text("Editing tags... "+posts_left+" posts remaining...");',
-					'				window.setTimeout(ajax_retag, 1500);',
-					'			}',
-					'			',
-					'		}',
-					'	});',
-					'}',
-					'$(window).load(ajax_retag);',
-					'</script>',
-				);
+				$js = file_get_contents($this->directory.'/tag-admin.js');
 			}
 		}
 
@@ -158,7 +140,7 @@ class qa_tagging_tools
 
 				array(
 					'type' => 'custom',
-					'html' => implode("\n", $js)."\n",
+					'html' => '<script>'.$js.'</script>',
 				),
 			),
 
