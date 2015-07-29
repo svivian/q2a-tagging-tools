@@ -22,7 +22,7 @@ Installation & Usage
 5. If you have existing mistagged questions, tick the checkbox to replace all tags in older questions with your synonyms.
    WARNING: if you have a lot of questions on your site, converting all the old questions will take a long time. Version 1.5 now uses AJAX to edit a few posts at a time, however, it may still cause high MySQL and Apache CPU usage. It's recommended that you add tag synonyms a handful at a time to avoid too much overhead.
 
-6. The option "Prevent new users from creating new tags" adds a Javascript barrier preventing low-rep users from creating new tags. Currently there is no way to replicate this on the server side without hacking the core, but that will rarely be a problem.
+6. The option "Prevent new users from creating new tags" adds a JavaScript barrier preventing low-rep users from creating new tags. However, due to its nature it only checks against the tags in the `qa_tags_complete` that are used for auto-complete. The server-side filter checks against all tags. In other words, if JS is turned off the user can input a tag not in the most popular 1000 but it must already exist.
 
 
 
