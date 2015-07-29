@@ -96,6 +96,13 @@ class qa_tagging_tools
 			if (qa_post_text('tagging_tools_convert')) {
 				$saved_msg = '<div id="tagging_tools_recalc">Editing tags...</div>';
 				$js = file_get_contents($this->directory.'/tag-admin.js');
+
+				$replace = array(
+					'VAR_LANG_PROGESS' => qa_js(qa_lang('taggingtools/recalc_progress')),
+					'VAR_LANG_ERROR' => qa_js(qa_lang('taggingtools/recalc_error')),
+					'VAR_LANG_DONE' => qa_js(qa_lang('taggingtools/recalc_done')),
+				);
+				$js = strtr($js, $replace);
 			}
 		}
 
