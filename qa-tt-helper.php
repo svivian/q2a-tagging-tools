@@ -25,7 +25,7 @@ class qa_tt_helper
 	}
 
 	// converts each tag to a synonym if it exists
-	public static function convert_tags( &$tags, &$synonyms )
+	public static function convert_tags( $tags, $synonyms )
 	{
 		$newtags = array();
 

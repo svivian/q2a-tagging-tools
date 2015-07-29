@@ -30,27 +30,6 @@ class qa_tagging_tools
 		}
 	}
 
-	public function process_event( $event, $userid, $handle, $cookieid, $params )
-	{
-		// only interested in questions
-		if ( $event != 'q_post' && $event != 'q_edit' )
-			return;
-
-		// get config data
-		$config = qa_opt('tagging_tools_synonyms');
-		if ( !$config )
-			return;
-
-		$oldtags = qa_tagstring_to_tags( @$params['tags'] );
-		$synonyms = qa_tt_helper::synonyms_to_array( $config );
-		$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
-
-		// updating content would trigger another event, so we suspend events to avoid an infinite loop
-		qa_suspend_event_reports(true);
-		qa_post_set_content( $params['postid'], $params['title'], $params['content'], $params['format'], $newtags );
-		qa_suspend_event_reports(false);
-	}
-
 	public function admin_form( &$qa_content )
 	{
 		// process config change
