@@ -12,20 +12,20 @@ class qa_tagging_tools_ajax
 {
 	private $process_tags = 5;
 
-	public function match_request( $request )
+	public function match_request($request)
 	{
 		return $request == 'ajax-tagging-tools';
 	}
 
-	public function process_request( $request )
+	public function process_request($request)
 	{
 		$userlevel = qa_get_logged_in_level();
-		if ( $userlevel < QA_USER_LEVEL_SUPER )
+		if ($userlevel < QA_USER_LEVEL_SUPER)
 			return;
 
-		$synonyms = qa_tt_helper::synonyms_to_array( qa_opt('tagging_tools_synonyms') );
+		$synonyms = qa_tt_helper::synonyms_to_array(qa_opt('tagging_tools_synonyms'));
 		$from = array();
-		foreach ( $synonyms as $syn )
+		foreach ($synonyms as $syn)
 			$from[] = "'" . qa_db_escape_string($syn['from']) . "'";
 
 		// basic select
@@ -36,8 +36,7 @@ class qa_tagging_tools_ajax
 		$result = qa_db_query_sub($sql_count);
 		$count = qa_db_read_one_assoc($result, true);
 
-		if ( $count['total'] == 0 )
-		{
+		if ($count['total'] == 0) {
 			echo '0';
 			return;
 		}
@@ -49,11 +48,10 @@ class qa_tagging_tools_ajax
 
 		qa_suspend_event_reports(true); // avoid infinite loop
 		$userid = qa_get_logged_in_userid();
-		foreach ( $questions as $q )
-		{
-			$oldtags = qa_tagstring_to_tags( @$q['tags'] );
-			$newtags = qa_tt_helper::convert_tags( $oldtags, $synonyms );
-			qa_post_set_content( $q['postid'], null, null, null, $newtags, null, null, $userid );
+		foreach ($questions as $q) {
+			$oldtags = qa_tagstring_to_tags(@$q['tags']);
+			$newtags = qa_tt_helper::convert_tags($oldtags, $synonyms);
+			qa_post_set_content($q['postid'], null, null, null, $newtags, null, null, $userid);
 		}
 		qa_suspend_event_reports(false);
 

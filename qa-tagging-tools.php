@@ -71,22 +71,20 @@ class qa_tagging_tools
 		}
 	}
 
-	public function admin_form( &$qa_content )
+	public function admin_form(&$qa_content)
 	{
 		// process config change
 		$saved_msg = '';
 		$js = array();
 
-		if ( qa_clicked('tagging_tools_save_button') )
-		{
-			qa_opt( 'tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))) );
-			qa_opt( 'tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent') );
-			qa_opt( 'tagging_tools_rep', (int) qa_post_text('tagging_tools_rep') );
+		if (qa_clicked('tagging_tools_save_button')) {
+			qa_opt('tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
+			qa_opt('tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent'));
+			qa_opt('tagging_tools_rep', (int) qa_post_text('tagging_tools_rep'));
 			$saved_msg = '<div id="tagging_tools_recalc">Tag Synonyms settings saved</div>';
 
 			// convert all old tags based on synonyms
-			if ( qa_post_text('tagging_tools_convert') )
-			{
+			if (qa_post_text('tagging_tools_convert')) {
 				$saved_msg = '<div id="tagging_tools_recalc">Editing tags...</div>';
 				$js = array(
 					'<script>',
@@ -99,10 +97,10 @@ class qa_tagging_tools
 // 					'			console.log(response);',
 					'			var posts_left = parseInt(response,10);',
 					'			var $ok = $("#tagging_tools_recalc");',
-					'			if ( posts_left === 0 ) {',
+					'			if (posts_left === 0) {',
 					'				$ok.text("All tags edited!");',
 					'			}',
-					'			else if ( isNaN(posts_left) ) {',
+					'			else if (isNaN(posts_left)) {',
 					'				$ok.text("There was an error editing the tags.");',
 					'			}',
 					'			else {',

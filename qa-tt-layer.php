@@ -25,11 +25,10 @@ class qa_html_theme_layer extends qa_html_theme_base
 
 	private function forbid_new_tag()
 	{
-		$q_edit = $this->template == 'ask' || isset( $this->content['form_q_edit'] );
+		$q_edit = $this->template == 'ask' || isset($this->content['form_q_edit']);
 		$tag_prevent = qa_opt('tagging_tools_prevent');
 
-		if ( $q_edit && $tag_prevent )
-		{
+		if ($q_edit && $tag_prevent) {
 			return
 				qa_get_logged_in_points() < (int) qa_opt('tagging_tools_rep') &&
 				qa_get_logged_in_level() < QA_USER_LEVEL_EXPERT;
