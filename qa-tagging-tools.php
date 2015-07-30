@@ -57,7 +57,10 @@ class qa_tagging_tools
 		}
 
 		if (count($errorTags)) {
-			$msg = 'You need '.$reqPoints.' points to create new tags. The following tags are not allowed: '.qa_html(implode(', ', $errorTags));
+			$msg = strtr(qa_lang_html('taggingtools/tags_not_usable'), array(
+				'^1' => qa_html($reqPoints),
+				'^2' => qa_html(implode(', ', $errorTags)),
+			));
 			$errors['tags'] = $msg;
 		}
 	}
@@ -90,11 +93,11 @@ class qa_tagging_tools
 			qa_opt('tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
 			qa_opt('tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent'));
 			qa_opt('tagging_tools_rep', (int) qa_post_text('tagging_tools_rep'));
-			$saved_msg = '<div id="tagging_tools_recalc">Tag Synonyms settings saved</div>';
+			$saved_msg = '<div id="tagging_tools_recalc">'.qa_lang_html('taggingtools/admin_saved').'</div>';
 
 			// convert all old tags based on synonyms
 			if (qa_post_text('tagging_tools_convert')) {
-				$saved_msg = '<div id="tagging_tools_recalc">Editing tags...</div>';
+				$saved_msg = '<div id="tagging_tools_recalc">'.qa_lang_html('taggingtools/recalc_start').'</div>';
 				$js = file_get_contents($this->directory.'/tag-admin.js');
 
 				$replace = array(
@@ -116,30 +119,30 @@ class qa_tagging_tools
 
 			'fields' => array(
 				array(
-					'label' => 'Tag Synonyms',
+					'label' => qa_lang_html('taggingtools/admin_synonyms'),
 					'tags' => 'name="tagging_tools_synonyms" id="tagging_tools_synonyms"',
 					'value' => qa_opt('tagging_tools_synonyms'),
 					'type' => 'textarea',
 					'rows' => 20,
-					'note' => 'Put each pair of synonyms on a new line. <code>q2a,question2answer</code> means that a tag of <code>q2a</code> will be replaced by <code>question2answer</code>, while <code>help</code> on its own means that tag will be removed.',
+					'note' => qa_lang_html('taggingtools/admin_synonyms_note'),
 				),
 				array(
-					'label' => 'Also convert existing tags using above rules',
+					'label' => qa_lang_html('taggingtools/admin_convert'),
 					'tags' => 'name="tagging_tools_convert" id="tagging_tools_convert"',
 					'value' => '',
 					'type' => 'checkbox',
 				),
 
 				array(
-					'label' => 'Prevent new users from creating new tags',
+					'label' => qa_lang_html('taggingtools/admin_prevent'),
 					'tags' => 'name="tagging_tools_prevent" id="tagging_tools_prevent"',
 					'value' => qa_opt('tagging_tools_prevent'),
 					'type' => 'checkbox',
 				),
 
 				array(
+					'label' => qa_lang_html('taggingtools/admin_minpoints'),
 					'id' => 'tagging_tools_rep',
-					'label' => 'Minimum reputation to create new tags',
 					'value' => qa_opt('tagging_tools_rep'),
 					'tags' => 'name="tagging_tools_rep"',
 					'type' => 'number',
@@ -153,7 +156,7 @@ class qa_tagging_tools
 
 			'buttons' => array(
 				array(
-					'label' => 'Save Changes',
+					'label' => qa_lang_html('main/save_button'),
 					'tags' => 'name="tagging_tools_save_button"',
 				),
 			),
