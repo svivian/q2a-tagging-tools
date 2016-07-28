@@ -51,7 +51,7 @@ class qa_tagging_tools_ajax
 		foreach ($questions as $q) {
 			$oldtags = qa_tagstring_to_tags(@$q['tags']);
 			$newtags = qa_tt_helper::convert_tags($oldtags, $synonyms);
-			qa_post_set_content($q['postid'], null, null, null, $newtags, null, null, $userid);
+			qa_post_set_content($q['postid'], null, null, null, $newtags);
 		}
 		qa_suspend_event_reports(false);
 
