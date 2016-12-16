@@ -32,7 +32,7 @@ class qa_tagging_tools
 		$userPoints = qa_get_logged_in_points();
 
 		// quit early if user has enough rep
-		if ($userPoints > $reqPoints)
+		if ($userPoints >= $reqPoints)
 			return;
 
 		// escape data
