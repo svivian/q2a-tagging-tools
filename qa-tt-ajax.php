@@ -25,8 +25,14 @@ class qa_tagging_tools_ajax
 
 		$synonyms = qa_tt_helper::synonyms_to_array(qa_opt('tagging_tools_synonyms'));
 		$from = array();
-		foreach ($synonyms as $syn)
+		foreach ($synonyms as $syn) {
 			$from[] = "'" . qa_db_escape_string($syn['from']) . "'";
+		}
+
+		if (empty($from)) {
+			echo '0';
+			return;
+		}
 
 		// basic select
 		$sql_suffix = 'FROM ^posts p, ^posttags t, ^words w WHERE w.wordid=t.wordid AND p.postid=t.postid AND BINARY w.word IN (' . implode(',', $from) . ')';

@@ -40,6 +40,9 @@ class qa_tagging_tools
 		foreach ($question['tags'] as $tag)
 			$tags[] = "'" . qa_db_escape_string($tag) . "'";
 
+		if (empty($tags))
+			return;
+
 		// get tag counts from database
 		$sql = 'SELECT word, tagcount FROM ^words WHERE word IN (' . implode(',', $tags) . ')';
 		$result = qa_db_query_sub($sql);
