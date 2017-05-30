@@ -3,8 +3,8 @@
 	Plugin Name: Tagging Tools
 	Plugin URI: https://github.com/svivian/q2a-tagging-tools
 	Plugin Description: Automatically modify/remove tags in questions
-	Plugin Version: 1.8.1
-	Plugin Date: 2016-12-16
+	Plugin Version: 1.8.2
+	Plugin Date: 2017-05-30
 	Plugin Author: Scott Vivian
 	Plugin Author URI: http://codelair.com/
 	Plugin License: GPLv3
