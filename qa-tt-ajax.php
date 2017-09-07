@@ -4,8 +4,8 @@
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
-require_once QA_INCLUDE_DIR.'qa-app-posts.php';
-require_once QA_INCLUDE_DIR.'qa-util-string.php';
+require_once QA_INCLUDE_DIR.'app/posts.php';
+require_once QA_INCLUDE_DIR.'util/string.php';
 require_once 'qa-tt-helper.php';
 
 class qa_tagging_tools_ajax
