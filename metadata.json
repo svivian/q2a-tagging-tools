@@ -9,5 +9,6 @@
 	"license": "GPLv3",
 	"update_uri": "https://raw.githubusercontent.com/svivian/q2a-tagging-tools/master/metadata.json",
 	"min_q2a": "1.6",
-	"min_php": "5.4"
+	"min_php": "5.4",
+	"load_order": "after_db_init"
 }
