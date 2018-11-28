@@ -26,4 +26,4 @@ function ajax_retag()
 	});
 }
 
-$(window).load(ajax_retag);
+$(window).on('load', ajax_retag);

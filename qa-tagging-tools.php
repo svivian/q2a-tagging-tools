@@ -14,6 +14,10 @@ class qa_tagging_tools
 
 	public function filter_question(&$question, &$errors, $oldquestion)
 	{
+		// quit early if there are no tags for some reason
+		if (!isset($question['tags']))
+			return;
+
 		// replace tag synonyms
 		$config = trim(qa_opt('tagging_tools_synonyms'));
 		if (!empty($config)) {
@@ -28,11 +32,12 @@ class qa_tagging_tools
 			}
 		}
 
+		$tagPrevent = qa_opt('tagging_tools_prevent');
 		$reqPoints = qa_opt('tagging_tools_rep');
 		$userPoints = qa_get_logged_in_points();
 
 		// quit early if user has enough rep
-		if ($userPoints >= $reqPoints)
+		if (!$tagPrevent || $userPoints >= $reqPoints)
 			return;
 
 		// escape data

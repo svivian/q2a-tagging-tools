@@ -29,5 +29,5 @@ function qa_tag_verify()
 }
 
 $(function(){
-	$('.qa-form-tall-button-ask').on('click', qa_tag_verify);
+	$('form[name=ask]').on('submit', qa_tag_verify);
 });
