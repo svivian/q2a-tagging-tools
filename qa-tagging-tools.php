@@ -28,11 +28,12 @@ class qa_tagging_tools
 			}
 		}
 
+		$tagPrevent = qa_opt('tagging_tools_prevent');
 		$reqPoints = qa_opt('tagging_tools_rep');
 		$userPoints = qa_get_logged_in_points();
 
 		// quit early if user has enough rep
-		if ($userPoints >= $reqPoints)
+		if (!$tagPrevent || $userPoints >= $reqPoints)
 			return;
 
 		// escape data
