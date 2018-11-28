@@ -14,6 +14,10 @@ class qa_tagging_tools
 
 	public function filter_question(&$question, &$errors, $oldquestion)
 	{
+		// quit early if there are no tags for some reason
+		if (!isset($question['tags']))
+			return;
+
 		// replace tag synonyms
 		$config = trim(qa_opt('tagging_tools_synonyms'));
 		if (!empty($config)) {
