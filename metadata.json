@@ -2,7 +2,7 @@
 	"name": "Tagging Tools",
 	"uri": "https://github.com/svivian/q2a-tagging-tools",
 	"description": "Automatically modify/remove tags in questions",
-	"version": "1.8.6",
+	"version": "1.8.7",
 	"date": "2018-11-28",
 	"author": "Scott Vivian",
 	"author_uri": "http://codelair.com",
