@@ -10,6 +10,10 @@ class qa_html_theme_layer extends qa_html_theme_base
 	{
 		qa_html_theme_base::head_script();
 
+		// skip JS if no permission to post
+		if (qa_user_permit_error('permit_post_q') !== false)
+			return;
+
 		if ($this->forbid_new_tag()) {
 			$replace = array(
 				'VAR_TAG_SEPARATOR' => qa_opt('tag_separator_comma') ? qa_js(',') : qa_js(' '),
