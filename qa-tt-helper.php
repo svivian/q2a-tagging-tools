@@ -17,6 +17,11 @@ class qa_tt_helper
 			$items = explode(',', $line);
 			if (!isset($items[1]))
 				$items[1] = '';
+
+			// ignore tags being replaced by the same one
+			if ($items[0] === $items[1])
+				continue;
+
 			$synonyms[] = array(
 				'from' => trim($items[0]),
 				'to' => trim($items[1]),
