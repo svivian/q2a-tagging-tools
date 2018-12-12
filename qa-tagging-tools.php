@@ -88,6 +88,8 @@ class qa_tagging_tools
 				return 0;
 			case 'tagging_tools_rep':
 				return 100;
+			case 'tagging_tools_redirect':
+				return 0;
 		}
 	}
 
@@ -101,7 +103,8 @@ class qa_tagging_tools
 			qa_opt('tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
 			qa_opt('tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent'));
 			qa_opt('tagging_tools_rep', (int) qa_post_text('tagging_tools_rep'));
-			$saved_msg = '<div id="tagging_tools_recalc">'.qa_lang_html('taggingtools/admin_saved').'</div>';
+			qa_opt('tagging_tools_redirect', (int) qa_post_text('tagging_tools_redirect'));
+			$saved_msg = '<div id="tagging_tools_recalc">'.qa_lang_html('admin/options_saved').'</div>';
 
 			// convert all old tags based on synonyms
 			if (qa_post_text('tagging_tools_convert')) {
@@ -145,6 +148,13 @@ class qa_tagging_tools
 					'label' => qa_lang_html('taggingtools/admin_prevent'),
 					'tags' => 'name="tagging_tools_prevent" id="tagging_tools_prevent"',
 					'value' => qa_opt('tagging_tools_prevent'),
+					'type' => 'checkbox',
+				),
+
+				array(
+					'label' => qa_lang_html('taggingtools/admin_redirect'),
+					'tags' => 'name="tagging_tools_redirect" id="tagging_tools_redirect"',
+					'value' => qa_opt('tagging_tools_redirect'),
 					'type' => 'checkbox',
 				),
 
