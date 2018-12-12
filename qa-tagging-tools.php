@@ -4,7 +4,7 @@
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
-require_once QA_INCLUDE_DIR.'app/posts.php';
+require_once QA_INCLUDE_DIR . 'app/posts.php';
 require_once 'qa-tt-helper.php';
 
 class qa_tagging_tools
@@ -41,7 +41,7 @@ class qa_tagging_tools
 			return;
 
 		// escape data
-		$tags = array();
+		$tags = [];
 		foreach ($question['tags'] as $tag)
 			$tags[] = "'" . qa_db_escape_string($tag) . "'";
 
@@ -52,23 +52,23 @@ class qa_tagging_tools
 		$sql = 'SELECT word, tagcount FROM ^words WHERE word IN (' . implode(',', $tags) . ')';
 		$result = qa_db_query_sub($sql);
 
-		$existingTags = array();
+		$existingTags = [];
 		foreach (qa_db_read_all_assoc($result) as $row) {
 			$existingTags[$row['word']] = $row['tagcount'];
 		}
 
 		// check if submitted tags are allowed
-		$errorTags = array();
+		$errorTags = [];
 		foreach ($question['tags'] as $tag) {
 			if (!isset($existingTags[$tag]) || $existingTags[$tag] == 0)
 				$errorTags[] = $tag;
 		}
 
 		if (count($errorTags)) {
-			$msg = strtr(qa_lang_html('taggingtools/tags_not_usable'), array(
+			$msg = strtr(qa_lang_html('taggingtools/tags_not_usable'), [
 				'^1' => qa_html($reqPoints),
 				'^2' => qa_html(implode(', ', $errorTags)),
-			));
+			]);
 			$errors['tags'] = $msg;
 		}
 	}
@@ -96,7 +96,7 @@ class qa_tagging_tools
 	public function admin_form(&$qa_content)
 	{
 		// process config change
-		$saved_msg = '';
+		$savedMsg = '';
 		$js = '';
 
 		if (qa_clicked('tagging_tools_save_button')) {
@@ -104,80 +104,77 @@ class qa_tagging_tools
 			qa_opt('tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent'));
 			qa_opt('tagging_tools_rep', (int) qa_post_text('tagging_tools_rep'));
 			qa_opt('tagging_tools_redirect', (int) qa_post_text('tagging_tools_redirect'));
-			$saved_msg = '<div id="tagging_tools_recalc">'.qa_lang_html('admin/options_saved').'</div>';
+
+			$savedMsg = '<div id="tagging_tools_recalc">' . qa_lang_html('admin/options_saved') . '</div>';
 
 			// convert all old tags based on synonyms
 			if (qa_post_text('tagging_tools_convert')) {
-				$saved_msg = '<div id="tagging_tools_recalc">'.qa_lang_html('taggingtools/recalc_start').'</div>';
-				$js = file_get_contents($this->directory.'/tag-admin.js');
+				$savedMsg = '<div id="tagging_tools_recalc">' . qa_lang_html('taggingtools/recalc_start') . '</div>';
+				$js = file_get_contents($this->directory . '/tag-admin.js');
 
-				$replace = array(
+				$replace = [
 					'VAR_LANG_PROGESS' => qa_js(qa_lang('taggingtools/recalc_progress')),
 					'VAR_LANG_ERROR' => qa_js(qa_lang('taggingtools/recalc_error')),
 					'VAR_LANG_DONE' => qa_js(qa_lang('taggingtools/recalc_done')),
-				);
+				];
 				$js = strtr($js, $replace);
 			}
 		}
 
 		// set fields to show/hide when checkbox is clicked
-		qa_set_display_rules($qa_content, array(
+		qa_set_display_rules($qa_content, [
 			'tagging_tools_rep' => 'tagging_tools_prevent',
-		));
+		]);
 
-		return array(
-			'ok' => $saved_msg,
+		return [
+			'ok' => $savedMsg,
 
-			'fields' => array(
-				array(
+			'fields' => [
+				[
 					'label' => qa_lang_html('taggingtools/admin_synonyms'),
 					'tags' => 'name="tagging_tools_synonyms" id="tagging_tools_synonyms"',
 					'value' => qa_opt('tagging_tools_synonyms'),
 					'type' => 'textarea',
 					'rows' => 20,
 					'note' => qa_lang_html('taggingtools/admin_synonyms_note'),
-				),
-				array(
+				],
+				[
 					'label' => qa_lang_html('taggingtools/admin_convert'),
 					'tags' => 'name="tagging_tools_convert" id="tagging_tools_convert"',
 					'value' => '',
 					'type' => 'checkbox',
-				),
-
-				array(
+				],
+				[
 					'label' => qa_lang_html('taggingtools/admin_prevent'),
 					'tags' => 'name="tagging_tools_prevent" id="tagging_tools_prevent"',
 					'value' => qa_opt('tagging_tools_prevent'),
 					'type' => 'checkbox',
-				),
-
-				array(
-					'label' => qa_lang_html('taggingtools/admin_redirect'),
-					'tags' => 'name="tagging_tools_redirect" id="tagging_tools_redirect"',
-					'value' => qa_opt('tagging_tools_redirect'),
-					'type' => 'checkbox',
-				),
-
-				array(
+				],
+				[
 					'label' => qa_lang_html('taggingtools/admin_minpoints'),
 					'id' => 'tagging_tools_rep',
 					'value' => qa_opt('tagging_tools_rep'),
 					'tags' => 'name="tagging_tools_rep"',
 					'type' => 'number',
-				),
-
-				array(
+				],
+				[
+					'label' => qa_lang_html('taggingtools/admin_redirect'),
+					'tags' => 'name="tagging_tools_redirect" id="tagging_tools_redirect"',
+					'value' => qa_opt('tagging_tools_redirect'),
+					'type' => 'checkbox',
+				],
+				[
 					'type' => 'custom',
-					'html' => '<script>'.$js.'</script>',
-				),
-			),
+					'html' => '<script>' . $js . '</script>',
+				],
+			],
 
-			'buttons' => array(
-				array(
+			'buttons' => [
+				[
 					'label' => qa_lang_html('main/save_button'),
 					'tags' => 'name="tagging_tools_save_button"',
-				),
-			),
-		);
+				],
+			],
+		];
 	}
 }

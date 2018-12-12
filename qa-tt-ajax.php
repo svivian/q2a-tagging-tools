@@ -4,8 +4,8 @@
 	License: http://www.gnu.org/licenses/gpl.html
 */
 
-require_once QA_INCLUDE_DIR.'app/posts.php';
-require_once QA_INCLUDE_DIR.'util/string.php';
+require_once QA_INCLUDE_DIR . 'app/posts.php';
+require_once QA_INCLUDE_DIR . 'util/string.php';
 require_once 'qa-tt-helper.php';
 
 class qa_tagging_tools_ajax
@@ -24,7 +24,7 @@ class qa_tagging_tools_ajax
 			return;
 
 		$synonyms = qa_tt_helper::synonyms_to_array(qa_opt('tagging_tools_synonyms'));
-		$from = array();
+		$from = [];
 		foreach ($synonyms as $syn) {
 			$from[] = "'" . qa_db_escape_string($syn['from']) . "'";
 		}
@@ -38,7 +38,7 @@ class qa_tagging_tools_ajax
 		$sql_suffix = 'FROM ^posts p, ^posttags t, ^words w WHERE w.wordid=t.wordid AND p.postid=t.postid AND BINARY w.word IN (' . implode(',', $from) . ')';
 
 		// get total
-		$sql_count = 'SELECT count(*) AS total '.$sql_suffix;
+		$sql_count = "SELECT count(*) AS total $sql_suffix";
 		$result = qa_db_query_sub($sql_count);
 		$count = qa_db_read_one_assoc($result, true);
 
@@ -48,7 +48,7 @@ class qa_tagging_tools_ajax
 		}
 
 		// get some posts to edit
-		$sql = 'SELECT p.postid, BINARY p.tags AS tags '.$sql_suffix.' LIMIT '.$this->process_tags;
+		$sql = "SELECT p.postid, BINARY p.tags AS tags $sql_suffix LIMIT {$this->process_tags}";
 		$result = qa_db_query_sub($sql);
 		$questions = qa_db_read_all_assoc($result);
 

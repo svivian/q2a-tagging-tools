@@ -15,7 +15,6 @@
 
 if (!defined('QA_VERSION')) exit;
 
-
 qa_register_plugin_module('filter', 'qa-tagging-tools.php', 'qa_tagging_tools', 'Tagging Tools');
 qa_register_plugin_module('page', 'qa-tt-ajax.php', 'qa_tagging_tools_ajax', 'Tagging Tools AJAX handler');
 qa_register_plugin_module('process', 'qa-tt-redirect.php', 'qa_tagging_tools_redirect', 'Tagging Tools tag redirect');
