@@ -137,7 +137,7 @@ class qa_tagging_tools
 					'tags' => 'name="tagging_tools_synonyms" id="tagging_tools_synonyms"',
 					'value' => qa_opt('tagging_tools_synonyms'),
 					'type' => 'textarea',
-					'rows' => 20,
+					'rows' => 12,
 					'note' => preg_replace('/`(.+?)`/', '<code>$1</code>', qa_lang_html('taggingtools/admin_synonyms_note')),
 				],
 				[
