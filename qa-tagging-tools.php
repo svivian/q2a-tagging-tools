@@ -32,44 +32,70 @@ class qa_tagging_tools
 			}
 		}
 
+		// check for tags too long/short
+		$this->tagLengthCheck($question, $errors);
+		if (!empty($errors))
+			return;
+
+		// check if user can use these tags
+		$this->newTagCheck($question, $errors);
+	}
+
+	private function tagLengthCheck(&$question, &$errors)
+	{
+		$tagMinLength = (int) qa_opt('tagging_tools_min_length');
+		$tagMaxLength = (int) qa_opt('tagging_tools_max_length');
+
+		$badLengthTags = [];
+		foreach ($question['tags'] as $tag) {
+			$tagLength = qa_strlen($tag);
+			if ($tagLength < $tagMinLength || ($tagMaxLength > 0 && $tagLength > $tagMaxLength)) {
+				$badLengthTags[] = $tag;
+			}
+		}
+
+		if (!empty($badLengthTags)) {
+			$errors['tags'] = strtr(qa_lang_html('taggingtools/tag_bad_length'), [
+				'^1' => $tagMinLength,
+				'^2' => $tagMaxLength,
+				'^3' => qa_html(implode(', ', $badLengthTags)),
+			]);
+		}
+	}
+
+	private function newTagCheck(&$question, &$errors)
+	{
 		$tagPrevent = qa_opt('tagging_tools_prevent');
 		$reqPoints = qa_opt('tagging_tools_rep');
 		$userPoints = qa_get_logged_in_points();
 
-		// quit early if user has enough rep
-		if (!$tagPrevent || $userPoints >= $reqPoints)
+		// quit early if user has enough rep, or no tags to process
+		if (!$tagPrevent || $userPoints >= $reqPoints || empty($question['tags']))
 			return;
 
 		// escape data
 		$tags = [];
 		foreach ($question['tags'] as $tag)
 			$tags[] = "'" . qa_db_escape_string($tag) . "'";
-
-		if (empty($tags))
-			return;
+		$sqlTagString = implode(',', $tags);
 
 		// get tag counts from database
-		$sql = 'SELECT word, tagcount FROM ^words WHERE word IN (' . implode(',', $tags) . ')';
+		$sql = "SELECT word FROM ^words WHERE word IN ($sqlTagString) AND tagcount > 0";
 		$result = qa_db_query_sub($sql);
-
-		$existingTags = [];
-		foreach (qa_db_read_all_assoc($result) as $row) {
-			$existingTags[$row['word']] = $row['tagcount'];
-		}
+		$existingTags = qa_db_read_all_values($result);
 
 		// check if submitted tags are allowed
 		$errorTags = [];
 		foreach ($question['tags'] as $tag) {
-			if (!isset($existingTags[$tag]) || $existingTags[$tag] == 0)
+			if (!in_array($tag, $existingTags))
 				$errorTags[] = $tag;
 		}
 
 		if (count($errorTags)) {
-			$msg = strtr(qa_lang_html('taggingtools/tags_not_usable'), [
+			$errors['tags'] = strtr(qa_lang_html('taggingtools/tags_not_usable'), [
 				'^1' => qa_html($reqPoints),
 				'^2' => qa_html(implode(', ', $errorTags)),
 			]);
-			$errors['tags'] = $msg;
 		}
 	}
 
@@ -84,6 +110,10 @@ class qa_tagging_tools
 		switch ($option) {
 			case 'tagging_tools_synonyms':
 				return '';
+			case 'tagging_tools_min_length':
+				return 0;
+			case 'tagging_tools_max_length':
+				return 0;
 			case 'tagging_tools_prevent':
 				return 0;
 			case 'tagging_tools_rep':
@@ -101,6 +131,8 @@ class qa_tagging_tools
 
 		if (qa_clicked('tagging_tools_save_button')) {
 			qa_opt('tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
+			qa_opt('tagging_tools_min_length', (int) qa_post_text('tagging_tools_min_length'));
+			qa_opt('tagging_tools_max_length', (int) qa_post_text('tagging_tools_max_length'));
 			qa_opt('tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent'));
 			qa_opt('tagging_tools_rep', (int) qa_post_text('tagging_tools_rep'));
 			qa_opt('tagging_tools_redirect', (int) qa_post_text('tagging_tools_redirect'));
@@ -148,6 +180,21 @@ class qa_tagging_tools
 					'type' => 'checkbox',
 				],
 				['type' => 'blank'],
+				[
+					'label' => qa_lang_html('taggingtools/admin_min_tag_length'),
+					'id' => 'tagging_tools_min_length',
+					'value' => qa_opt('tagging_tools_min_length'),
+					'tags' => 'name="tagging_tools_min_length"',
+					'type' => 'number',
+				],
+				[
+					'label' => qa_lang_html('taggingtools/admin_max_tag_length'),
+					'id' => 'tagging_tools_max_length',
+					'value' => qa_opt('tagging_tools_max_length'),
+					'tags' => 'name="tagging_tools_max_length"',
+					'type' => 'number',
+					'note' => qa_lang_html('taggingtools/admin_max_tag_length_note'),
+				],
 				[
 					'label' => qa_lang_html('taggingtools/admin_prevent'),
 					'tags' => 'name="tagging_tools_prevent" id="tagging_tools_prevent"',
