@@ -128,22 +128,26 @@ class qa_tagging_tools
 
 		return [
 			'ok' => $savedMsg,
+			'style' => 'wide',
 
 			'fields' => [
 				[
+					'style' => 'tall',
 					'label' => qa_lang_html('taggingtools/admin_synonyms'),
 					'tags' => 'name="tagging_tools_synonyms" id="tagging_tools_synonyms"',
 					'value' => qa_opt('tagging_tools_synonyms'),
 					'type' => 'textarea',
 					'rows' => 20,
-					'note' => qa_lang_html('taggingtools/admin_synonyms_note'),
+					'note' => preg_replace('/`(.+?)`/', '<code>$1</code>', qa_lang_html('taggingtools/admin_synonyms_note')),
 				],
 				[
+					'style' => 'tall',
 					'label' => qa_lang_html('taggingtools/admin_convert'),
 					'tags' => 'name="tagging_tools_convert" id="tagging_tools_convert"',
 					'value' => '',
 					'type' => 'checkbox',
 				],
+				['type' => 'blank'],
 				[
 					'label' => qa_lang_html('taggingtools/admin_prevent'),
 					'tags' => 'name="tagging_tools_prevent" id="tagging_tools_prevent"',
@@ -151,7 +155,7 @@ class qa_tagging_tools
 					'type' => 'checkbox',
 				],
 				[
-					'label' => qa_lang_html('taggingtools/admin_minpoints'),
+					'label' => qa_lang_html('taggingtools/admin_min_points'),
 					'id' => 'tagging_tools_rep',
 					'value' => qa_opt('tagging_tools_rep'),
 					'tags' => 'name="tagging_tools_rep"',
@@ -164,6 +168,7 @@ class qa_tagging_tools
 					'type' => 'checkbox',
 				],
 				[
+					'style' => 'tall',
 					'type' => 'custom',
 					'html' => '<script>' . $js . '</script>',
 				],

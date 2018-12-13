@@ -7,11 +7,11 @@
 return [
 
 	'admin_convert' => 'Also convert existing tags using above rules',
-	'admin_minpoints' => 'Minimum reputation to create new tags',
+	'admin_min_points' => 'Minimum reputation to create new tags',
 	'admin_prevent' => 'Prevent new users from creating new tags',
 	'admin_redirect' => 'Add 301 (permanent) redirects for tag synonyms',
 	'admin_synonyms' => 'Tag Synonyms',
-	'admin_synonyms_note' => 'Put each pair of synonyms on a new line. <code>q2a,question2answer</code> means that a tag of <code>q2a</code> will be replaced by <code>question2answer</code>, while <code>help</code> on its own means that tag will be removed.',
+	'admin_synonyms_note' => 'Put each pair of synonyms on a new line. `q2a,question2answer` means that a tag of `q2a` will be replaced by `question2answer`, while `help` on its own means that tag will be removed.',
 
 	'recalc_done' => 'All tags edited!',
 	'recalc_error' => 'There was an error editing the tags.',
