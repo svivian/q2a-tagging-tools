@@ -1,7 +1,8 @@
 <?php
 /*
-	Question2Answer Edit History plugin
-	License: http://www.gnu.org/licenses/gpl.html
+	Question2Answer Tagging Tools plugin
+	Copyright (C) 2011 Scott Vivian
+	License: https://www.gnu.org/licenses/gpl.html
 */
 
 return [

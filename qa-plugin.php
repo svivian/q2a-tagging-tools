@@ -1,5 +1,8 @@
 <?php
 /*
+	Question2Answer Tagging Tools plugin
+	Copyright (C) 2011 Scott Vivian
+
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
@@ -10,7 +13,7 @@
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
 
-	More about this license: http://www.gnu.org/licenses/gpl.html
+	More about this license: https://www.gnu.org/licenses/gpl.html
 */
 
 if (!defined('QA_VERSION')) exit;

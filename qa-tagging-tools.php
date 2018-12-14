@@ -1,7 +1,8 @@
 <?php
 /*
 	Question2Answer Tagging Tools plugin
-	License: http://www.gnu.org/licenses/gpl.html
+	Copyright (C) 2011 Scott Vivian
+	License: https://www.gnu.org/licenses/gpl.html
 */
 
 require_once QA_INCLUDE_DIR . 'app/posts.php';
