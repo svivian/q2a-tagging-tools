@@ -24,9 +24,11 @@ return [
 
 	// client-side
 	'tag_not_usable_js' => 'The tag <q>^1</q> does not exist; you need ^2 points to create new tags.',
-	'tag_bad_length_js' => 'Tags must be between ^1 and ^2 letters long.',
+	'tag_too_short_js' => 'Tags must be at least ^1 letters long.',
+	'tag_wrong_length_js' => 'Tags must be between ^1 and ^2 letters long.',
 	// server-side
 	'tags_not_usable' => 'You need ^1 points to create new tags. The following tags are not allowed: ^2',
-	'tag_bad_length' => 'Tags must be between ^1 and ^2 letters long. The following tags are not allowed: ^3',
+	'tag_too_short' => 'Tags must be at least ^1 letters long. The following tags are not allowed: ^2',
+	'tag_wrong_length' => 'Tags must be between ^1 and ^2 letters long. The following tags are not allowed: ^3',
 
 ];

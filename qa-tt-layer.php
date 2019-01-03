@@ -28,7 +28,8 @@ class qa_html_theme_layer extends qa_html_theme_base
 			', minLength: ' . qa_js(qa_opt('tagging_tools_min_length')) .
 			', maxLength: ' . qa_js(qa_opt('tagging_tools_max_length')) .
 			', newTagErrorTemplate: ' . qa_js(qa_lang('taggingtools/tag_not_usable_js')) .
-			', lengthErrorTemplate: ' . qa_js(qa_lang('taggingtools/tag_bad_length_js')) .
+			', shortErrorTemplate: ' . qa_js(qa_lang('taggingtools/tag_too_short_js')) .
+			', lengthErrorTemplate: ' . qa_js(qa_lang('taggingtools/tag_wrong_length_js')) .
 			'};';
 
 		$js = file_get_contents(QA_HTML_THEME_LAYER_DIRECTORY . '/tag-filter.js');

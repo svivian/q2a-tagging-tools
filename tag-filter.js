@@ -8,9 +8,15 @@ function taggingToolsVerify()
 		var tag = tags[i];
 
 		if (tag.length < taggingTools.minLength || (taggingTools.maxLength > 0 && tag.length > taggingTools.maxLength)) {
-			var errorMsg = taggingTools.lengthErrorTemplate
-				.replace('^1', taggingTools.minLength)
-				.replace('^2', taggingTools.maxLength);
+			var errorMsg = '';
+			if (taggingTools.maxLength == 0) {
+				errorMsg = taggingTools.shortErrorTemplate.replace('^1', taggingTools.minLength);
+			} else {
+				errorMsg = taggingTools.lengthErrorTemplate
+					.replace('^1', taggingTools.minLength)
+					.replace('^2', taggingTools.maxLength);
+			}
+
 			taggingToolsShowError(this, errorMsg);
 			return false;
 		}

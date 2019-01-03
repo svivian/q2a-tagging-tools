@@ -56,11 +56,18 @@ class qa_tagging_tools
 		}
 
 		if (!empty($badLengthTags)) {
-			$errors['tags'] = strtr(qa_lang_html('taggingtools/tag_bad_length'), [
-				'^1' => $tagMinLength,
-				'^2' => $tagMaxLength,
-				'^3' => qa_html(implode(', ', $badLengthTags)),
-			]);
+			if ($tagMaxLength == 0) {
+				$errors['tags'] = strtr(qa_lang_html('taggingtools/tag_too_short'), [
+					'^1' => $tagMinLength,
+					'^2' => qa_html(implode(', ', $badLengthTags)),
+				]);
+			} else {
+				$errors['tags'] = strtr(qa_lang_html('taggingtools/tag_wrong_length'), [
+					'^1' => $tagMinLength,
+					'^2' => $tagMaxLength,
+					'^3' => qa_html(implode(', ', $badLengthTags)),
+				]);
+			}
 		}
 	}
 
