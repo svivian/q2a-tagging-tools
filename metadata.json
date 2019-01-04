@@ -1,9 +1,9 @@
 {
 	"name": "Tagging Tools",
 	"uri": "https://github.com/svivian/q2a-tagging-tools",
-	"description": "Automatically modify/remove tags in questions",
-	"version": "1.9.0",
-	"date": "2018-12-14",
+	"description": "Automatically change or remove tags in questions",
+	"version": "1.9.1",
+	"date": "2019-01-04",
 	"author": "Scott Vivian",
 	"author_uri": "http://codelair.com",
 	"license": "GPLv3",

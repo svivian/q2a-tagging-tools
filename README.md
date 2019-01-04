@@ -22,9 +22,9 @@ Most of my code is released under the open source GPLv3 license, and provided wi
 Installation & Usage
 -------------------------------------------------
 
-1. Download and extract the files to a subfolder such as `tagging-tools` inside the `qa-plugins` folder of your Q2A installation. Check the [releases page](https://github.com/svivian/q2a-tagging-tools/releases) for the latest official version.
+1. Download and extract the files to your Q2A plugins folder (e.g. `qa-plugin/tagging-tools`). Check the [releases page](https://github.com/svivian/q2a-tagging-tools/releases) for the latest official version.
 
-2. If your site is a different language from English, copy `qa-tt-lang-default.php` to the required language code (e.g. `qa-tt-lang-de.php` for German) and edit the phrases for your language.
+2. If your site uses a different language, copy `qa-tt-lang-default.php` to a new file with the required country code (e.g. `qa-tt-lang-de.php` for German) and edit the phrases for your language.
 
 3. Log in to your Q2A site as an Administrator and head to Admin > Plugins.
 
