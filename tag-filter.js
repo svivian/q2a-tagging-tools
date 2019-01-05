@@ -7,6 +7,11 @@ function taggingToolsVerify()
 	for (var i in tags) {
 		var tag = tags[i];
 
+		// trim tag and skip if blank
+		tag = tag.replace(/^\s+|\s+$/gm, '');
+		if (tag.length == 0)
+			continue;
+
 		if (tag.length < taggingTools.minLength || (taggingTools.maxLength > 0 && tag.length > taggingTools.maxLength)) {
 			var errorMsg = '';
 			if (taggingTools.maxLength == 0) {
