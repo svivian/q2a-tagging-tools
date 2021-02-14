@@ -138,7 +138,11 @@ class qa_tagging_tools
 		$js = '';
 
 		if (qa_clicked('tagging_tools_save_button')) {
-			qa_opt('tagging_tools_synonyms', strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
+			$synonyms =  explode("\n", strtolower(trim(qa_post_text('tagging_tools_synonyms'))));
+			sort($synonyms);
+			$synonyms = array_unique($synonyms);
+			$sorted_synonyms = implode("\n", $synonyms);
+			qa_opt('tagging_tools_synonyms', $sorted_synonyms);
 			qa_opt('tagging_tools_min_length', (int) qa_post_text('tagging_tools_min_length'));
 			qa_opt('tagging_tools_max_length', (int) qa_post_text('tagging_tools_max_length'));
 			qa_opt('tagging_tools_prevent', (int) qa_post_text('tagging_tools_prevent'));
