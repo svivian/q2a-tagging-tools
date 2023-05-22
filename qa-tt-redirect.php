@@ -10,7 +10,7 @@ class qa_tagging_tools_redirect
 {
 	public function plugins_loaded()
 	{
-		$request = qa_request();
+		$request = (string) qa_request();
 		$useRedirects = (bool) qa_opt('tagging_tools_redirect');
 
 		if (!$useRedirects || !preg_match('#^tag/([^/]+)$#', $request, $matches))
